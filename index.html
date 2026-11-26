@@ -4,17 +4,25 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>TeaRound</title>
 <style>
-:root{--bg:#f6f3ee;--card:#fff;--ink:#211b16;--muted:#756b63;--accent:#5c3b25;--line:#e7dfd6;--ok:#26734d;--danger:#a23b31}*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}button,input{font:inherit}button{cursor:pointer;border:0}.wrap{max-width:720px;margin:auto;padding:20px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.brand{font-weight:800;font-size:24px}.pill{padding:7px 11px;border-radius:999px;background:#e8f3ec;color:var(--ok);font-size:13px;font-weight:700}.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin:12px 0;box-shadow:0 3px 16px #00000008}.hero h1{margin:0 0 5px;font-size:30px}.muted{color:var(--muted);font-size:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.item{display:flex;align-items:center;justify-content:space-between;padding:15px;border:1px solid var(--line);border-radius:16px}.item .name{font-weight:700}.controls{display:flex;align-items:center;gap:9px}.round{width:42px;height:42px;border-radius:12px;background:#f0ebe5;color:var(--ink);font-size:22px;touch-action:manipulation}.round:active{transform:scale(.96)}.qty{min-width:28px;text-align:center;font-weight:800;font-size:18px}.primary{width:100%;padding:14px 16px;border-radius:14px;background:var(--accent);color:white;font-weight:800;margin-top:12px}.secondary{padding:11px 14px;border-radius:12px;background:#efe9e2;color:var(--ink);font-weight:700}.danger{background:#f7e5e2;color:var(--danger)}.summary{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:13px;border-radius:14px;background:#f7f3ee}.stat b{display:block;font-size:22px}.hidden{display:none}.list{display:flex;flex-direction:column;gap:9px}.row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line)}label{display:block;font-weight:700;margin:12px 0 6px}input{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:white}h2{margin:4px 0 12px;font-size:19px}.notice{padding:12px;border-radius:12px;background:#f4efe9;color:var(--muted);font-size:13px}.footer{color:var(--muted);font-size:12px;text-align:center;padding:18px}.tabs{display:flex;gap:8px;margin:10px 0}.tab{flex:1;padding:11px;border-radius:12px;background:#eee8e0;font-weight:700}.tab.active{background:var(--accent);color:white}@media(max-width:520px){.grid{grid-template-columns:1fr}.wrap{padding:14px}.hero h1{font-size:26px}}
+:root{--bg:#f6f3ee;--card:#fff;--ink:#211b16;--muted:#756b63;--accent:#5c3b25;--line:#e7dfd6;--ok:#26734d;--danger:#a23b31}*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}button,input{font:inherit}button{cursor:pointer;border:0}.wrap{max-width:720px;margin:auto;padding:20px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.brand{font-weight:800;font-size:24px}.pill{padding:7px 11px;border-radius:999px;background:#e8f3ec;color:var(--ok);font-size:13px;font-weight:700}.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin:12px 0;box-shadow:0 3px 16px #00000008}.hero h1{margin:0 0 5px;font-size:30px}.muted{color:var(--muted);font-size:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.item{display:flex;align-items:center;justify-content:space-between;padding:15px;border:1px solid var(--line);border-radius:16px}.item .name{font-weight:700}.controls{display:flex;align-items:center;gap:9px}.round{width:42px;height:42px;border-radius:12px;background:#f0ebe5;color:var(--ink);font-size:22px;touch-action:manipulation}.round:active{transform:scale(.96)}.qty{min-width:28px;text-align:center;font-weight:800;font-size:18px}.primary{width:100%;padding:14px 16px;border-radius:14px;background:var(--accent);color:white;font-weight:800;margin-top:12px}.secondary{padding:11px 14px;border-radius:12px;background:#efe9e2;color:var(--ink);font-weight:700}.danger{background:#f7e5e2;color:var(--danger)}.summary{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:13px;border-radius:14px;background:#f7f3ee}.stat b{display:block;font-size:22px}.hidden{display:none}.list{display:flex;flex-direction:column;gap:9px}.row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}label{display:block;font-weight:700;margin:12px 0 6px}input{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:white}h2{margin:4px 0 12px;font-size:19px}.notice{padding:12px;border-radius:12px;background:#f4efe9;color:var(--muted);font-size:13px}.footer{color:var(--muted);font-size:12px;text-align:center;padding:18px}.tabs{display:flex;gap:8px;margin:10px 0}.tab{flex:1;padding:11px;border-radius:12px;background:#eee8e0;font-weight:700}.tab.active{background:var(--accent);color:white}.menu-builder{display:flex;flex-direction:column;gap:8px}.menu-entry{display:grid;grid-template-columns:58px 1fr 42px;gap:8px;align-items:center}.menu-entry input{padding:10px}.emoji-input{text-align:center}.remove-menu{width:42px;height:42px;border-radius:12px;background:#f7e5e2;color:var(--danger);font-weight:800}.add-menu{margin-top:10px;width:100%;padding:11px 14px;border-radius:12px;background:#efe9e2;color:var(--ink);font-weight:700}@media(max-width:520px){.grid{grid-template-columns:1fr}.wrap{padding:14px}.hero h1{font-size:26px}}
 </style></head>
 <body><div class="wrap">
 <div class="top"><div class="brand">🍵 TeaRound</div><div id="status" class="pill">New round</div></div>
+
 <div id="setup" class="card">
 <h2>Create a tea round</h2>
 <label>Round name</label><input id="roundName" value="Morning Tea">
 <label>Closing time</label><input id="closeTime" type="time" value="11:30">
 <label>Expected people <span class="muted">(optional)</span></label><input id="people" type="number" min="1" value="10">
+
+<h2 style="margin-top:20px">Menu items</h2>
+<div class="notice">Add the items people can order in this round. You can use any item name and an optional emoji.</div>
+<div id="menuBuilder" class="menu-builder" style="margin-top:10px"></div>
+<button id="addMenuBtn" class="add-menu" type="button">＋ Add menu item</button>
+
 <button id="startBtn" class="primary" type="button">Start Round</button>
 </div>
+
 <div id="app" class="hidden">
 <div class="card hero"><h1 id="title"></h1><div class="muted" id="meta"></div></div>
 <div class="tabs"><button class="tab active" data-tab="order" type="button">Place order</button><button class="tab" data-tab="count" type="button">Live count</button></div>
@@ -28,25 +36,91 @@
 </div>
 <div class="footer">TeaRound • Count the order, not the accounts.</div>
 </div>
+
 <script>
 'use strict';
 
-const menu=[['Tea','🫖'],['Coffee','☕'],['Samosa','🥟'],['Biscuit','🍪']];
+const defaultMenu=[['Tea','🫖'],['Coffee','☕'],['Samosa','🥟'],['Biscuit','🍪']];
 const $=id=>document.getElementById(id);
 let state=JSON.parse(localStorage.getItem('tearound')||'null');
-let my={Tea:0,Coffee:0,Samosa:0,Biscuit:0};
+if(state && !Array.isArray(state.menu)) state.menu=defaultMenu.map(x=>[...x]);
+
+let menuDraft=state && Array.isArray(state.menu) ? state.menu.map(x=>[...x]) : defaultMenu.map(x=>[...x]);
+let my={};
+
+function resetMy(){
+  my={};
+  currentMenu().forEach(([n])=>my[n]=0);
+}
+
+function currentMenu(){
+  return state && Array.isArray(state.menu) ? state.menu : menuDraft;
+}
 
 function save(){localStorage.setItem('tearound',JSON.stringify(state));}
 
+function renderMenuBuilder(){
+  $('menuBuilder').innerHTML=menuDraft.map(([name,emoji],i)=>`
+    <div class="menu-entry">
+      <input class="emoji-input menu-emoji" data-index="${i}" maxlength="4" value="${escapeHtml(emoji||'')}" aria-label="Emoji for menu item">
+      <input class="menu-name" data-index="${i}" value="${escapeHtml(name||'')}" placeholder="Item name" aria-label="Menu item name">
+      <button class="remove-menu" data-index="${i}" type="button" aria-label="Remove menu item">×</button>
+    </div>`).join('');
+}
+
+function escapeHtml(value){
+  return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function readMenuDraft(){
+  const names=[...document.querySelectorAll('.menu-name')];
+  const emojis=[...document.querySelectorAll('.menu-emoji')];
+  menuDraft=names.map((input,i)=>[
+    input.value.trim()||'Item '+(i+1),
+    emojis[i].value.trim()||'🍵'
+  ]);
+}
+
+function addMenuItem(){
+  readMenuDraft();
+  menuDraft.push(['New Item','🍽️']);
+  renderMenuBuilder();
+  const names=document.querySelectorAll('.menu-name');
+  names[names.length-1]?.focus();
+}
+
+function removeMenuItem(index){
+  readMenuDraft();
+  if(menuDraft.length<=1){alert('Keep at least one menu item.');return;}
+  menuDraft.splice(index,1);
+  renderMenuBuilder();
+}
+
 function startRound(){
-  state={name:$('roundName').value.trim()||'Tea Round',close:$('closeTime').value,people:+$('people').value||0,closed:false,orders:[]};
-  my={Tea:0,Coffee:0,Samosa:0,Biscuit:0};
+  readMenuDraft();
+  const cleaned=menuDraft.filter(x=>x[0].trim());
+  if(!cleaned.length){alert('Please add at least one menu item.');return;}
+  state={
+    name:$('roundName').value.trim()||'Tea Round',
+    close:$('closeTime').value,
+    people:+$('people').value||0,
+    closed:false,
+    menu:cleaned,
+    orders:[]
+  };
+  menuDraft=state.menu.map(x=>[...x]);
+  resetMy();
   save();
   render();
 }
 
 function render(){
-  if(!state){$('setup').classList.remove('hidden');$('app').classList.add('hidden');return;}
+  if(!state){
+    $('setup').classList.remove('hidden');
+    $('app').classList.add('hidden');
+    renderMenuBuilder();
+    return;
+  }
   $('setup').classList.add('hidden');
   $('app').classList.remove('hidden');
   $('title').textContent=state.name;
@@ -59,13 +133,22 @@ function render(){
 }
 
 function buildItems(){
-  $('items').innerHTML=menu.map(([n,e])=>`<div class="item"><div>${e} <span class="name">${n}</span></div><div class="controls"><button class="round minus" data-item="${n}" type="button" aria-label="Remove ${n}">−</button><span class="qty" id="q-${n}">${my[n]}</span><button class="round plus" data-item="${n}" type="button" aria-label="Add ${n}">+</button></div></div>`).join('');
+  $('items').innerHTML=currentMenu().map(([n,e])=>`
+    <div class="item">
+      <div>${e} <span class="name">${escapeHtml(n)}</span></div>
+      <div class="controls">
+        <button class="round minus" data-item="${escapeHtml(n)}" type="button" aria-label="Remove ${escapeHtml(n)}">−</button>
+        <span class="qty" id="q-${escapeHtml(n)}">${my[n]||0}</span>
+        <button class="round plus" data-item="${escapeHtml(n)}" type="button" aria-label="Add ${escapeHtml(n)}">+</button>
+      </div>
+    </div>`).join('');
 }
 
 function change(n,d){
   if(!state || state.closed)return;
-  my[n]=Math.max(0,my[n]+d);
-  $('q-'+n).textContent=my[n];
+  my[n]=Math.max(0,(my[n]||0)+d);
+  const q=$('q-'+n);
+  if(q)q.textContent=my[n];
 }
 
 function submitOrder(){
@@ -80,11 +163,12 @@ function submitOrder(){
 
 function updateCounts(){
   if(!state)return;
+  const menu=currentMenu();
   let totals=Object.fromEntries(menu.map(x=>[x[0],0]));
-  state.orders.forEach(o=>menu.forEach(([n])=>totals[n]+=o.items[n]||0));
-  $('summary').innerHTML=menu.map(([n,e])=>`<div class="stat"><span>${e} ${n}</span><b>${totals[n]}</b></div>`).join('');
+  state.orders.forEach(o=>menu.forEach(([n])=>totals[n]+=o.items?.[n]||0));
+  $('summary').innerHTML=menu.map(([n,e])=>`<div class="stat"><span>${e} ${escapeHtml(n)}</span><b>${totals[n]}</b></div>`).join('');
   $('peopleList').innerHTML=`<div class="row"><span>People ordered</span><b>${state.orders.length}${state.people?' / '+state.people:''}</b></div>`;
-  $('shop').innerHTML=menu.map(([n,e])=>`<div class="row"><span>${e} ${n}</span><b>${totals[n]}</b></div>`).join('');
+  $('shop').innerHTML=menu.map(([n,e])=>`<div class="row"><span>${e} ${escapeHtml(n)}</span><b>${totals[n]}</b></div>`).join('');
 }
 
 function closeRound(){
@@ -112,10 +196,19 @@ async function copyShopOrder(){
 }
 
 $('startBtn').addEventListener('click',startRound);
+$('addMenuBtn').addEventListener('click',addMenuItem);
 $('submitBtn').addEventListener('click',submitOrder);
 $('closeBtn').addEventListener('click',closeRound);
 $('copyBtn').addEventListener('click',copyShopOrder);
 document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>showTab(btn.dataset.tab)));
+
+$('menuBuilder').addEventListener('click',e=>{
+  const btn=e.target.closest('button[data-index]');
+  if(btn)removeMenuItem(Number(btn.dataset.index));
+});
+
+$('menuBuilder').addEventListener('input',readMenuDraft);
+
 $('items').addEventListener('click',e=>{
   const btn=e.target.closest('button[data-item]');
   if(!btn)return;
