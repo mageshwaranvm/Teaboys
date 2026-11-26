@@ -1,11 +1,33 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>TeaRound</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--bg:#f6f3ee;--card:#fff;--ink:#211b16;--muted:#756b63;--accent:#5c3b25;--line:#e7dfd6;--ok:#26734d;--danger:#a23b31}*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}button,input{font:inherit}button{cursor:pointer;border:0}.wrap{max-width:720px;margin:auto;padding:20px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.brand{font-weight:800;font-size:24px}.pill{padding:7px 11px;border-radius:999px;background:#e8f3ec;color:var(--ok);font-size:13px;font-weight:700}.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin:12px 0;box-shadow:0 3px 16px #00000008}.hero h1{margin:0 0 5px;font-size:30px}.muted{color:var(--muted);font-size:14px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.item{display:flex;align-items:center;justify-content:space-between;padding:15px;border:1px solid var(--line);border-radius:16px}.item .name{font-weight:700}.controls{display:flex;align-items:center;gap:9px}.round{width:42px;height:42px;border-radius:12px;background:#f0ebe5;color:var(--ink);font-size:22px;touch-action:manipulation}.round:active{transform:scale(.96)}.qty{min-width:28px;text-align:center;font-weight:800;font-size:18px}.primary{width:100%;padding:14px 16px;border-radius:14px;background:var(--accent);color:white;font-weight:800;margin-top:12px}.secondary{padding:11px 14px;border-radius:12px;background:#efe9e2;color:var(--ink);font-weight:700}.danger{background:#f7e5e2;color:var(--danger)}.summary{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:13px;border-radius:14px;background:#f7f3ee}.stat b{display:block;font-size:22px}.hidden{display:none}.list{display:flex;flex-direction:column;gap:9px}.row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}label{display:block;font-weight:700;margin:12px 0 6px}input{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:white}h2{margin:4px 0 12px;font-size:19px}.notice{padding:12px;border-radius:12px;background:#f4efe9;color:var(--muted);font-size:13px}.footer{color:var(--muted);font-size:12px;text-align:center;padding:18px}.tabs{display:flex;gap:8px;margin:10px 0}.tab{flex:1;padding:11px;border-radius:12px;background:#eee8e0;font-weight:700}.tab.active{background:var(--accent);color:white}.menu-builder{display:flex;flex-direction:column;gap:8px}.menu-entry{display:grid;grid-template-columns:58px 1fr 42px;gap:8px;align-items:center}.menu-entry input{padding:10px}.emoji-input{text-align:center}.remove-menu{width:42px;height:42px;border-radius:12px;background:#f7e5e2;color:var(--danger);font-weight:800}.add-menu{margin-top:10px;width:100%;padding:11px 14px;border-radius:12px;background:#efe9e2;color:var(--ink);font-weight:700}@media(max-width:520px){.grid{grid-template-columns:1fr}.wrap{padding:14px}.hero h1{font-size:26px}}
-</style></head>
+:root{--bg:#f6f3ee;--card:#fff;--ink:#211b16;--muted:#756b63;--accent:#5c3b25;--line:#e7dfd6;--ok:#26734d;--danger:#a23b31}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+button,input{font:inherit}button{cursor:pointer;border:0}.wrap{max-width:720px;margin:auto;padding:20px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.brand{font-weight:800;font-size:24px}
+.pill{padding:7px 11px;border-radius:999px;background:#e8f3ec;color:var(--ok);font-size:13px;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin:12px 0;box-shadow:0 3px 16px #00000008}
+.hero h1{margin:0 0 5px;font-size:30px}.muted{color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.item{display:flex;align-items:center;justify-content:space-between;padding:15px;border:1px solid var(--line);border-radius:16px}
+.item .name{font-weight:700}.controls{display:flex;align-items:center;gap:9px}.round{width:42px;height:42px;border-radius:12px;background:#f0ebe5;color:var(--ink);font-size:22px;touch-action:manipulation}
+.qty{min-width:28px;text-align:center;font-weight:800;font-size:18px}.primary{width:100%;padding:14px 16px;border-radius:14px;background:var(--accent);color:white;font-weight:800;margin-top:12px}
+.secondary{padding:11px 14px;border-radius:12px;background:#efe9e2;color:var(--ink);font-weight:700}.danger{background:#f7e5e2;color:var(--danger)}
+.summary{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:13px;border-radius:14px;background:#f7f3ee}.stat b{display:block;font-size:22px}
+.hidden{display:none}.list{display:flex;flex-direction:column;gap:9px}.row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}
+label{display:block;font-weight:700;margin:12px 0 6px}input{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:white}
+h2{margin:4px 0 12px;font-size:19px}.notice{padding:12px;border-radius:12px;background:#f4efe9;color:var(--muted);font-size:13px}
+.tabs{display:flex;gap:8px;margin:10px 0}.tab{flex:1;padding:11px;border-radius:12px;background:#eee8e0;font-weight:700}.tab.active{background:var(--accent);color:white}
+.menu-builder{display:flex;flex-direction:column;gap:8px}.menu-entry{display:grid;grid-template-columns:58px 1fr 42px;gap:8px;align-items:center}.menu-entry input{padding:10px}
+.emoji-input{text-align:center}.remove-menu{width:42px;height:42px;border-radius:12px;background:#f7e5e2;color:var(--danger);font-weight:800}.add-menu{margin-top:10px;width:100%;padding:11px 14px;border-radius:12px;background:#efe9e2;color:var(--ink);font-weight:700}
+.share{word-break:break-all;font-size:13px;background:#f7f3ee;padding:10px;border-radius:10px;margin-top:10px}
+.footer{color:var(--muted);font-size:12px;text-align:center;padding:18px}@media(max-width:520px){.grid{grid-template-columns:1fr}.wrap{padding:14px}.hero h1{font-size:26px}}
+</style>
+</head>
 <body><div class="wrap">
 <div class="top"><div class="brand">🍵 TeaRound</div><div id="status" class="pill">New round</div></div>
 
@@ -14,206 +36,119 @@
 <label>Round name</label><input id="roundName" value="Morning Tea">
 <label>Closing time</label><input id="closeTime" type="time" value="11:30">
 <label>Expected people <span class="muted">(optional)</span></label><input id="people" type="number" min="1" value="10">
-
 <h2 style="margin-top:20px">Menu items</h2>
-<div class="notice">Add the items people can order in this round. You can use any item name and an optional emoji.</div>
+<div class="notice">Add the items employees can order in this round.</div>
 <div id="menuBuilder" class="menu-builder" style="margin-top:10px"></div>
 <button id="addMenuBtn" class="add-menu" type="button">＋ Add menu item</button>
-
-<button id="startBtn" class="primary" type="button">Start Round</button>
+<button id="startBtn" class="primary" type="button">Create &amp; Start Round</button>
 </div>
 
 <div id="app" class="hidden">
 <div class="card hero"><h1 id="title"></h1><div class="muted" id="meta"></div></div>
+<div id="shareCard" class="card hidden"><h2>Share this round</h2><div class="notice">Send this link to your employees. Everyone using it will see the same live count.</div><div id="shareUrl" class="share"></div><button id="shareBtn" class="primary">Share round link</button></div>
 <div class="tabs"><button class="tab active" data-tab="order" type="button">Place order</button><button class="tab" data-tab="count" type="button">Live count</button></div>
+
 <section id="order">
-<div class="card"><h2>My order</h2><div class="grid" id="items"></div><button id="submitBtn" class="primary" type="button">Confirm my order</button><div id="saved" class="notice hidden">Your order is saved. You can change it until the round is closed.</div></div>
+<div class="card">
+<h2>Employee details</h2><label>Your name</label><input id="employeeName" placeholder="e.g. Magesh">
+<h2 style="margin-top:20px">My order</h2><div class="grid" id="items"></div>
+<button id="submitBtn" class="primary" type="button">Confirm my order</button>
+<div id="saved" class="notice hidden">Your order is saved. You can change it until the round is closed.</div>
+</div>
 </section>
+
 <section id="count" class="hidden">
 <div class="card"><h2>Live count</h2><div class="summary" id="summary"></div><div class="list" id="peopleList"></div><button id="closeBtn" class="primary" type="button">🔒 Close round</button></div>
 <div class="card"><h2>Shop order</h2><div class="list" id="shop"></div><button id="copyBtn" class="secondary" type="button">Copy shop order</button></div>
 </section>
 </div>
-<div class="footer">TeaRound • Count the order, not the accounts.</div>
+<div class="footer">TeaRound • One round, one shared order.</div>
 </div>
 
 <script>
 'use strict';
-
+const SUPABASE_URL='https://mfcpgogbnjwqacvopgns.supabase.co';
+const SUPABASE_KEY='sb_publishable_3Pu9dG2QeiXYyHQXwXpb0A_XD48zoBS';
+const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const defaultMenu=[['Tea','🫖'],['Coffee','☕'],['Samosa','🥟'],['Biscuit','🍪']];
 const $=id=>document.getElementById(id);
-let state=JSON.parse(localStorage.getItem('tearound')||'null');
-if(state && !Array.isArray(state.menu)) state.menu=defaultMenu.map(x=>[...x]);
+const params=new URLSearchParams(location.search);
+const roundId=params.get('round');
+const deviceKey='tearound-device-id';
+const deviceId=localStorage.getItem(deviceKey)||crypto.randomUUID();
+localStorage.setItem(deviceKey,deviceId);
+let state=null,my={},menuDraft=defaultMenu.map(x=>[...x]),adminToken=localStorage.getItem('tearound-admin-token')||'';
 
-let menuDraft=state && Array.isArray(state.menu) ? state.menu.map(x=>[...x]) : defaultMenu.map(x=>[...x]);
-let my={};
+function esc(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function currentMenu(){return state?.menu||menuDraft}
+function resetMy(){my={};currentMenu().forEach(([n])=>my[n]=0)}
+function renderBuilder(){ $('menuBuilder').innerHTML=menuDraft.map(([n,e],i)=>`<div class="menu-entry"><input class="emoji-input menu-emoji" data-i="${i}" maxlength="4" value="${esc(e)}"><input class="menu-name" data-i="${i}" value="${esc(n)}" placeholder="Item name"><button class="remove-menu" data-i="${i}" type="button">×</button></div>`).join('') }
+function readDraft(){const n=[...document.querySelectorAll('.menu-name')],e=[...document.querySelectorAll('.menu-emoji')];menuDraft=n.map((x,i)=>[x.value.trim()||'Item '+(i+1),e[i].value.trim()||'🍽️'])}
+function addMenu(){readDraft();menuDraft.push(['New Item','🍽️']);renderBuilder();document.querySelectorAll('.menu-name').at(-1)?.focus()}
+function removeMenu(i){readDraft();if(menuDraft.length<=1)return alert('Keep at least one menu item.');menuDraft.splice(i,1);renderBuilder()}
 
-function resetMy(){
-  my={};
-  currentMenu().forEach(([n])=>my[n]=0);
+async function createRound(){
+ readDraft(); if(!menuDraft.length)return alert('Add at least one menu item.');
+ $('startBtn').disabled=true;
+ try{
+  const res=await fetch(SUPABASE_URL+'/functions/v1/round-admin',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY},body:JSON.stringify({action:'create',name:$('roundName').value.trim()||'Tea Round',close_time:$('closeTime').value,expected_people:+$('people').value||0,menu:menuDraft.map(x=>({name:x[0],emoji:x[1]}))})});
+  const data=await res.json(); if(!res.ok)throw new Error(data.error||'Could not create round');
+  adminToken=data.admin_token;localStorage.setItem('tearound-admin-token',adminToken);
+  history.replaceState({},'',location.pathname+'?round='+data.round.id);await loadRound(data.round.id);
+ }catch(e){alert(e.message)}finally{$('startBtn').disabled=false}
 }
 
-function currentMenu(){
-  return state && Array.isArray(state.menu) ? state.menu : menuDraft;
+async function loadRound(id){
+ const [{data:round,error:re},{data:menu,error:me},{data:orders,error:oe}]=await Promise.all([
+  supabase.from('rounds').select('id,name,close_time,expected_people,closed,created_at').eq('id',id).single(),
+  supabase.from('menu_items').select('name,emoji,sort_order').eq('round_id',id).order('sort_order'),
+  supabase.from('orders').select('id,device_id,employee_name,items,created_at,updated_at').eq('round_id',id)
+ ]);
+ if(re)throw re;if(me)throw me;if(oe)throw oe;
+ state={...round,menu:menu.map(x=>[x.name,x.emoji]),orders:orders||[]};resetMy();
+ const mine=state.orders.find(o=>o.device_id===deviceId);if(mine){my={...my,...mine.items};$('employeeName').value=mine.employee_name||'';$('saved').classList.remove('hidden')}
+ renderApp();
+ subscribe(id);
 }
 
-function save(){localStorage.setItem('tearound',JSON.stringify(state));}
-
-function renderMenuBuilder(){
-  $('menuBuilder').innerHTML=menuDraft.map(([name,emoji],i)=>`
-    <div class="menu-entry">
-      <input class="emoji-input menu-emoji" data-index="${i}" maxlength="4" value="${escapeHtml(emoji||'')}" aria-label="Emoji for menu item">
-      <input class="menu-name" data-index="${i}" value="${escapeHtml(name||'')}" placeholder="Item name" aria-label="Menu item name">
-      <button class="remove-menu" data-index="${i}" type="button" aria-label="Remove menu item">×</button>
-    </div>`).join('');
+function renderApp(){
+ $('setup').classList.add('hidden');$('app').classList.remove('hidden');
+ $('title').textContent=state.name;$('meta').textContent=(state.expected_people?state.expected_people+' people expected • ':'')+'Closes '+(state.close_time||'not set')+(state.closed?' • 🔒 Closed':'');
+ $('status').textContent=state.closed?'🔒 Closed':'🟢 Open';$('status').style.background=state.closed?'#f7e5e2':'#e8f3ec';$('status').style.color=state.closed?'#a23b31':'#26734d';
+ $('shareUrl').textContent=location.href;$('shareCard').classList.toggle('hidden',!adminToken);
+ buildItems();updateCounts();
 }
-
-function escapeHtml(value){
-  return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function buildItems(){$('items').innerHTML=currentMenu().map(([n,e])=>`<div class="item"><div>${esc(e)} <span class="name">${esc(n)}</span></div><div class="controls"><button class="round minus" data-item="${esc(n)}" type="button">−</button><span class="qty" id="q-${esc(n)}">${my[n]||0}</span><button class="round plus" data-item="${esc(n)}" type="button">+</button></div></div>`).join('')}
+function change(n,d){if(!state||state.closed)return;my[n]=Math.max(0,(my[n]||0)+d);$('q-'+n).textContent=my[n]}
+async function submitOrder(){
+ if(!state||state.closed)return alert('This round is closed.');
+ const name=$('employeeName').value.trim();if(!name)return alert('Please enter your name.');
+ const items={};currentMenu().forEach(([n])=>items[n]=my[n]||0);
+ const {error}=await supabase.from('orders').upsert({round_id:state.id,device_id:deviceId,employee_name:name,items,updated_at:new Date().toISOString()},{onConflict:'round_id,device_id'});
+ if(error)return alert(error.message);
+ $('saved').classList.remove('hidden');await refreshOrders();showTab('count');
 }
-
-function readMenuDraft(){
-  const names=[...document.querySelectorAll('.menu-name')];
-  const emojis=[...document.querySelectorAll('.menu-emoji')];
-  menuDraft=names.map((input,i)=>[
-    input.value.trim()||'Item '+(i+1),
-    emojis[i].value.trim()||'🍵'
-  ]);
-}
-
-function addMenuItem(){
-  readMenuDraft();
-  menuDraft.push(['New Item','🍽️']);
-  renderMenuBuilder();
-  const names=document.querySelectorAll('.menu-name');
-  names[names.length-1]?.focus();
-}
-
-function removeMenuItem(index){
-  readMenuDraft();
-  if(menuDraft.length<=1){alert('Keep at least one menu item.');return;}
-  menuDraft.splice(index,1);
-  renderMenuBuilder();
-}
-
-function startRound(){
-  readMenuDraft();
-  const cleaned=menuDraft.filter(x=>x[0].trim());
-  if(!cleaned.length){alert('Please add at least one menu item.');return;}
-  state={
-    name:$('roundName').value.trim()||'Tea Round',
-    close:$('closeTime').value,
-    people:+$('people').value||0,
-    closed:false,
-    menu:cleaned,
-    orders:[]
-  };
-  menuDraft=state.menu.map(x=>[...x]);
-  resetMy();
-  save();
-  render();
-}
-
-function render(){
-  if(!state){
-    $('setup').classList.remove('hidden');
-    $('app').classList.add('hidden');
-    renderMenuBuilder();
-    return;
-  }
-  $('setup').classList.add('hidden');
-  $('app').classList.remove('hidden');
-  $('title').textContent=state.name;
-  $('meta').textContent=(state.people?state.people+' people expected • ':'')+'Closes '+state.close+(state.closed?' • 🔒 Closed':'');
-  $('status').textContent=state.closed?'🔒 Closed':'🟢 Open';
-  $('status').style.background=state.closed?'#f7e5e2':'#e8f3ec';
-  $('status').style.color=state.closed?'#a23b31':'#26734d';
-  buildItems();
-  updateCounts();
-}
-
-function buildItems(){
-  $('items').innerHTML=currentMenu().map(([n,e])=>`
-    <div class="item">
-      <div>${e} <span class="name">${escapeHtml(n)}</span></div>
-      <div class="controls">
-        <button class="round minus" data-item="${escapeHtml(n)}" type="button" aria-label="Remove ${escapeHtml(n)}">−</button>
-        <span class="qty" id="q-${escapeHtml(n)}">${my[n]||0}</span>
-        <button class="round plus" data-item="${escapeHtml(n)}" type="button" aria-label="Add ${escapeHtml(n)}">+</button>
-      </div>
-    </div>`).join('');
-}
-
-function change(n,d){
-  if(!state || state.closed)return;
-  my[n]=Math.max(0,(my[n]||0)+d);
-  const q=$('q-'+n);
-  if(q)q.textContent=my[n];
-}
-
-function submitOrder(){
-  if(!state || state.closed)return;
-  state.orders=state.orders.filter(o=>o.id!=='me');
-  state.orders.push({id:'me',name:'Me',items:{...my},at:Date.now()});
-  save();
-  $('saved').classList.remove('hidden');
-  updateCounts();
-  showTab('count');
-}
-
+async function refreshOrders(){const {data,error}=await supabase.from('orders').select('id,device_id,employee_name,items,created_at,updated_at').eq('round_id',state.id);if(!error){state.orders=data||[];updateCounts()}}
 function updateCounts(){
-  if(!state)return;
-  const menu=currentMenu();
-  let totals=Object.fromEntries(menu.map(x=>[x[0],0]));
-  state.orders.forEach(o=>menu.forEach(([n])=>totals[n]+=o.items?.[n]||0));
-  $('summary').innerHTML=menu.map(([n,e])=>`<div class="stat"><span>${e} ${escapeHtml(n)}</span><b>${totals[n]}</b></div>`).join('');
-  $('peopleList').innerHTML=`<div class="row"><span>People ordered</span><b>${state.orders.length}${state.people?' / '+state.people:''}</b></div>`;
-  $('shop').innerHTML=menu.map(([n,e])=>`<div class="row"><span>${e} ${escapeHtml(n)}</span><b>${totals[n]}</b></div>`).join('');
+ const totals=Object.fromEntries(currentMenu().map(x=>[x[0],0]));state.orders.forEach(o=>currentMenu().forEach(([n])=>totals[n]+=Number(o.items?.[n]||0)));
+ $('summary').innerHTML=currentMenu().map(([n,e])=>`<div class="stat"><span>${esc(e)} ${esc(n)}</span><b>${totals[n]}</b></div>`).join('');
+ $('peopleList').innerHTML='<div class="row"><span>People ordered</span><b>'+state.orders.length+(state.expected_people?' / '+state.expected_people:'')+'</b></div>';
+ $('shop').innerHTML=currentMenu().map(([n,e])=>`<div class="row"><span>${esc(e)} ${esc(n)}</span><b>${totals[n]}</b></div>`).join('');
 }
-
-function closeRound(){
-  if(!state)return;
-  state.closed=true;
-  save();
-  render();
-  showTab('count');
+function subscribe(id){supabase.channel('round-'+id).on('postgres_changes',{event:'*',schema:'public',table:'orders',filter:'round_id=eq.'+id},()=>refreshOrders()).on('postgres_changes',{event:'UPDATE',schema:'public',table:'rounds',filter:'id=eq.'+id},p=>{state={...state,...p.new};renderApp()}).subscribe()}
+function showTab(id){$('order').classList.toggle('hidden',id!=='order');$('count').classList.toggle('hidden',id!=='count');document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===id))}
+async function closeRound(){
+ if(!adminToken)return alert('Only the round creator can close this round.');
+ const res=await fetch(SUPABASE_URL+'/functions/v1/round-admin',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY},body:JSON.stringify({action:'close',round_id:state.id,admin_token:adminToken})});
+ const data=await res.json();if(!res.ok)return alert(data.error||'Could not close round');state={...state,...data.round};renderApp();showTab('count');
 }
-
-function showTab(id){
-  $('order').classList.toggle('hidden',id!=='order');
-  $('count').classList.toggle('hidden',id!=='count');
-  document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));
-}
-
-async function copyShopOrder(){
-  const rows=[...$('shop').querySelectorAll('.row')].map(x=>x.innerText.replace('\n',' — ')).join('\n');
-  try{
-    await navigator.clipboard.writeText(state.name+'\n'+rows);
-    alert('Shop order copied');
-  }catch(e){
-    alert(state.name+'\n'+rows);
-  }
-}
-
-$('startBtn').addEventListener('click',startRound);
-$('addMenuBtn').addEventListener('click',addMenuItem);
-$('submitBtn').addEventListener('click',submitOrder);
-$('closeBtn').addEventListener('click',closeRound);
-$('copyBtn').addEventListener('click',copyShopOrder);
-document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>showTab(btn.dataset.tab)));
-
-$('menuBuilder').addEventListener('click',e=>{
-  const btn=e.target.closest('button[data-index]');
-  if(btn)removeMenuItem(Number(btn.dataset.index));
-});
-
-$('menuBuilder').addEventListener('input',readMenuDraft);
-
-$('items').addEventListener('click',e=>{
-  const btn=e.target.closest('button[data-item]');
-  if(!btn)return;
-  change(btn.dataset.item,btn.classList.contains('plus')?1:-1);
-});
-
-render();
-</script></body></html>
+async function copyShop(){const rows=[...$('shop').querySelectorAll('.row')].map(x=>x.innerText.replace('\n',' — ')).join('\n');try{await navigator.clipboard.writeText(state.name+'\n'+rows);alert('Shop order copied')}catch(e){alert(state.name+'\n'+rows)}}
+async function shareRound(){try{await navigator.share({title:state.name,text:'TeaRound order link',url:location.href})}catch(e){await navigator.clipboard.writeText(location.href);alert('Round link copied')}}
+$('startBtn').addEventListener('click',createRound);$('addMenuBtn').addEventListener('click',addMenu);$('submitBtn').addEventListener('click',submitOrder);$('closeBtn').addEventListener('click',closeRound);$('copyBtn').addEventListener('click',copyShop);$('shareBtn').addEventListener('click',shareRound);
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+$('menuBuilder').addEventListener('click',e=>{const b=e.target.closest('.remove-menu');if(b)removeMenu(+b.dataset.i)});
+$('items').addEventListener('click',e=>{const b=e.target.closest('button[data-item]');if(b)change(b.dataset.item,b.classList.contains('plus')?1:-1)});
+renderBuilder();
+(async()=>{if(roundId){try{await loadRound(roundId)}catch(e){alert('This round could not be loaded: '+e.message)}}})();
+</script>
+</body></html>
