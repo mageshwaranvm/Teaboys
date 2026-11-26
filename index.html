@@ -75,7 +75,7 @@ const roundId=params.get('round');
 const deviceKey='tearound-device-id';
 const deviceId=localStorage.getItem(deviceKey)||crypto.randomUUID();
 localStorage.setItem(deviceKey,deviceId);
-let state=null,my={},menuDraft=defaultMenu.map(x=>[...x]),adminToken=localStorage.getItem('tearound-admin-token')||'';
+let state=null,my={},menuDraft=defaultMenu.map(x=>[...x]),adminToken=localStorage.getItem('tearound-admin-token:'+roundId)||localStorage.getItem('tearound-admin-token')||'';
 
 function esc(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function currentMenu(){return state?.menu||menuDraft}
@@ -89,9 +89,12 @@ async function createRound(){
  readDraft(); if(!menuDraft.length)return alert('Add at least one menu item.');
  $('startBtn').disabled=true;
  try{
-  const data=await api('/functions/v1/round-admin',{method:'POST',body:JSON.stringify({action:'create',name:$('roundName').value.trim()||'Tea Round',close_time:$('closeTime').value,expected_people:+$('people').value||0,menu:menuDraft.map(x=>({name:x[0],emoji:x[1]}))}),prefer:'return=minimal'});
-  adminToken=data.admin_token;localStorage.setItem('tearound-admin-token',adminToken);
-  history.replaceState({},'',location.pathname+'?round='+data.round.id);await loadRound(data.round.id);
+  const data=await api('/rest/v1/rpc/create_round',{method:'POST',body:JSON.stringify({p_name:$('roundName').value.trim()||'Tea Round',p_close_time:$('closeTime').value,p_expected_people:+$('people').value||0,p_menu:menuDraft.map(x=>({name:x[0],emoji:x[1]}))})});
+  adminToken=data.admin_token;
+  localStorage.setItem('tearound-admin-token:'+data.round.id,adminToken);
+  localStorage.setItem('tearound-admin-token',adminToken);
+  history.replaceState({},'',location.pathname+'?round='+data.round.id);
+  await loadRound(data.round.id);
  }catch(e){alert('Could not create round: '+e.message)}finally{$('startBtn').disabled=false}
 }
 
@@ -140,8 +143,10 @@ function subscribe(id){if(window._roundPoll)clearInterval(window._roundPoll);win
 function showTab(id){$('order').classList.toggle('hidden',id!=='order');$('count').classList.toggle('hidden',id!=='count');document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===id))}
 async function closeRound(){
  if(!adminToken)return alert('Only the round creator can close this round.');
- const res=await fetch(SUPABASE_URL+'/functions/v1/round-admin',{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY},body:JSON.stringify({action:'close',round_id:state.id,admin_token:adminToken})});
- const data=await res.json();if(!res.ok)return alert(data.error||'Could not close round');state={...state,...data.round};renderApp();showTab('count');
+ try{
+  const data=await api('/rest/v1/rpc/close_round',{method:'POST',body:JSON.stringify({p_round_id:state.id,p_admin_token:adminToken})});
+  state={...state,...data.round};renderApp();showTab('count');
+ }catch(e){alert('Could not close round: '+e.message)}
 }
 async function copyShop(){const rows=[...$('shop').querySelectorAll('.row')].map(x=>x.innerText.replace('\n',' — ')).join('\n');try{await navigator.clipboard.writeText(state.name+'\n'+rows);alert('Shop order copied')}catch(e){alert(state.name+'\n'+rows)}}
 async function shareRound(){try{await navigator.share({title:state.name,text:'TeaRound order link',url:location.href})}catch(e){await navigator.clipboard.writeText(location.href);alert('Round link copied')}}
