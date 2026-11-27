@@ -36,6 +36,13 @@ h1{margin:0 0 6px;font-size:28px}h2{margin:4px 0 14px;font-size:20px}.muted{colo
 <h2>New order</h2>
 <div class="notice">Use + and − to set the quantity for each item.</div>
 <div id="items" class="grid" style="margin-top:12px"></div>
+<button id="addItemOnOrderBtn" class="secondary">＋ Add menu item</button>
+<div id="quickAddMenu" class="card hidden" style="margin:12px 0 0;padding:14px">
+<input id="quickMenuName" type="text" maxlength="60" placeholder="Menu item name" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;font:inherit">
+<input id="quickMenuEmoji" type="text" maxlength="8" placeholder="Emoji (optional)" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;font:inherit;margin-top:8px">
+<button id="quickAddMenuBtn" class="primary">＋ Add item</button>
+<button id="cancelQuickAddBtn" class="secondary">Cancel</button>
+</div>
 <button id="placeBtn" class="primary">Place order</button>
 <button id="backFromMenu" class="secondary">← Back</button>
 </section>
@@ -111,6 +118,26 @@ async function addMenuItem(){
   await openMenuEditor();
  }catch(e){alert('Could not add menu item: '+e.message)}
 }
+async function quickAddMenuItem(){
+ const name=$('quickMenuName').value.trim();
+ const emoji=$('quickMenuEmoji').value.trim()||'🍽️';
+ if(!name)return alert('Please enter an item name.');
+ if(menu.some(x=>x.name.toLowerCase()===name.toLowerCase()))return alert('That item already exists.');
+ try{
+  const sort_order=menu.length?Math.max(...menu.map(x=>Number(x.sort_order)||0))+1:0;
+  await api('/rest/v1/menu_catalog',{method:'POST',body:JSON.stringify({name,emoji,sort_order}),prefer:'return=representation'});
+  $('quickMenuName').value=''; $('quickMenuEmoji').value='';
+  $('quickAddMenu').classList.add('hidden');
+  await loadMenu();
+  if(editingOrderId){
+   const old=quantities;
+   quantities={};menu.forEach(x=>quantities[x.name]=old[x.name]||0);
+  }else{
+   resetQuantities();
+  }
+  renderMenu();
+ }catch(e){alert('Could not add menu item: '+e.message)}
+}
 async function deleteMenuItem(name){
  if(!confirm('Remove "'+name+'" from the menu?'))return;
  try{
@@ -168,6 +195,9 @@ async function loadPast(){
 $('newOrderHome').onclick=async()=>{editingOrderId=null;await loadMenu();resetQuantities();renderMenu();show('menuPage')};
 $('pastHome').onclick=async()=>{await loadPast();show('pastPage')};
 $('editMenuHome').onclick=openMenuEditor;
+$('addItemOnOrderBtn').onclick=()=>{$('quickAddMenu').classList.toggle('hidden');$('quickMenuName').focus()};
+$('cancelQuickAddBtn').onclick=()=>{$('quickAddMenu').classList.add('hidden');$('quickMenuName').value='';$('quickMenuEmoji').value=''};
+$('quickAddMenuBtn').onclick=quickAddMenuItem;
 $('backFromMenuEdit').onclick=()=>show('home');
 $('addMenuBtn').onclick=addMenuItem;
 $('menuEditor').onclick=e=>{const b=e.target.closest('[data-delete-menu]');if(b)deleteMenuItem(b.dataset.deleteMenu)};
