@@ -92,7 +92,7 @@ async function saveMenuCatalog(){
  readDraft();
  const clean=menuDraft.map((x,i)=>({name:x[0],emoji:x[1]||'🍽️',sort_order:i}));
  if(!clean.length)throw new Error('Add at least one menu item.');
- await api('/rest/v1/menu_catalog',{method:'POST',body:JSON.stringify(clean),prefer:'resolution=ignore-duplicates,return=minimal'});
+ await api('/rest/v1/menu_catalog?on_conflict=name',{method:'POST',body:JSON.stringify(clean),prefer:'resolution=merge-duplicates,return=minimal'});
 }
 function readDraft(){const n=[...document.querySelectorAll('.menu-name')],e=[...document.querySelectorAll('.menu-emoji')];menuDraft=n.map((x,i)=>[x.value.trim()||'Item '+(i+1),e[i].value.trim()||'🍽️']);saveMenuDraft()}
 function addMenu(){readDraft();menuDraft.push(['New Item','🍽️']);saveMenuDraft();renderBuilder();document.querySelectorAll('.menu-name')[document.querySelectorAll('.menu-name').length-1]?.focus()}
