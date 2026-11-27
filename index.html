@@ -29,6 +29,7 @@ h1{margin:0 0 6px;font-size:28px}h2{margin:4px 0 14px;font-size:20px}.muted{colo
 <div class="muted">Simple tea order taking</div>
 <button id="newOrderHome" class="primary home-btn">＋ New order<span>Select quantities and place a new tea order.</span></button>
 <button id="pastHome" class="secondary home-btn">🧾 Past orders<span>View the latest 10 tea orders.</span></button>
+<button id="editMenuHome" class="secondary home-btn">✏️ Edit menu<span>Add or remove items. Changes sync to Supabase for everyone.</span></button>
 </section>
 
 <section id="menuPage" class="card hidden">
@@ -44,6 +45,18 @@ h1{margin:0 0 6px;font-size:28px}h2{margin:4px 0 14px;font-size:20px}.muted{colo
 <div id="orderTotal"></div>
 <button id="editBtn" class="primary">✏️ Edit order</button>
 <button id="homeAfterOrder" class="secondary">Done</button>
+</section>
+
+<section id="menuEditPage" class="card hidden">
+<h2>Edit menu</h2>
+<div class="notice">Changes are saved to Supabase immediately, so the updated menu will appear when the app is opened on another device.</div>
+<div id="menuEditor" style="margin-top:12px"></div>
+<div class="card" style="margin:12px 0 0;padding:14px">
+<input id="newMenuName" type="text" maxlength="60" placeholder="New item name" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;font:inherit">
+<input id="newMenuEmoji" type="text" maxlength="8" placeholder="Emoji (optional)" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;font:inherit;margin-top:8px">
+<button id="addMenuBtn" class="primary">＋ Add item</button>
+</div>
+<button id="backFromMenuEdit" class="secondary">← Back</button>
 </section>
 
 <section id="pastPage" class="card hidden">
@@ -71,7 +84,7 @@ async function api(path,options={}){
 function esc(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 
 function show(page){
- ['home','menuPage','totalPage','pastPage'].forEach(id=>$(id).classList.toggle('hidden',id!==page));
+ ['home','menuPage','menuEditPage','totalPage','pastPage'].forEach(id=>$(id).classList.toggle('hidden',id!==page));
 }
 async function loadMenu(){
  try{
@@ -79,6 +92,31 @@ async function loadMenu(){
   menu=rows||[];
   if(!menu.length)throw new Error('No menu items found in Supabase.');
  }catch(e){alert('Could not load menu: '+e.message)}
+}
+function renderMenuEditor(){
+ $('menuEditor').innerHTML=menu.map(x=>'<div class="row"><span>'+esc(x.emoji||'🍽️')+' <b>'+esc(x.name)+'</b></span><button class="round" data-delete-menu="'+esc(x.name)+'" title="Remove item">🗑️</button></div>').join('');
+}
+async function openMenuEditor(){
+ await loadMenu(); renderMenuEditor(); show('menuEditPage');
+}
+async function addMenuItem(){
+ const name=$('newMenuName').value.trim();
+ const emoji=$('newMenuEmoji').value.trim()||'🍽️';
+ if(!name)return alert('Please enter an item name.');
+ if(menu.some(x=>x.name.toLowerCase()===name.toLowerCase()))return alert('That item already exists.');
+ try{
+  const sort_order=menu.length?Math.max(...menu.map(x=>Number(x.sort_order)||0))+1:0;
+  await api('/rest/v1/menu_catalog',{method:'POST',body:JSON.stringify({name,emoji,sort_order}),prefer:'return=representation'});
+  $('newMenuName').value=''; $('newMenuEmoji').value='';
+  await openMenuEditor();
+ }catch(e){alert('Could not add menu item: '+e.message)}
+}
+async function deleteMenuItem(name){
+ if(!confirm('Remove "'+name+'" from the menu?'))return;
+ try{
+  await api('/rest/v1/menu_catalog?name=eq.'+encodeURIComponent(name),{method:'DELETE',prefer:'return=minimal'});
+  await openMenuEditor();
+ }catch(e){alert('Could not remove menu item: '+e.message)}
 }
 function resetQuantities(){
  quantities={};menu.forEach(x=>quantities[x.name]=0);
@@ -129,6 +167,10 @@ async function loadPast(){
 
 $('newOrderHome').onclick=async()=>{editingOrderId=null;await loadMenu();resetQuantities();renderMenu();show('menuPage')};
 $('pastHome').onclick=async()=>{await loadPast();show('pastPage')};
+$('editMenuHome').onclick=openMenuEditor;
+$('backFromMenuEdit').onclick=()=>show('home');
+$('addMenuBtn').onclick=addMenuItem;
+$('menuEditor').onclick=e=>{const b=e.target.closest('[data-delete-menu]');if(b)deleteMenuItem(b.dataset.deleteMenu)};
 $('backFromMenu').onclick=()=>show('home');
 $('backFromPast').onclick=()=>show('home');
 $('homeAfterOrder').onclick=()=>{editingOrderId=null;show('home')};
